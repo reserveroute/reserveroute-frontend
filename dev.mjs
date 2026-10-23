@@ -1,0 +1,2 @@
+import {spawn} from 'node:child_process';
+const children=[spawn(process.execPath,['server.mjs'],{cwd:new URL('../reserveroute-backend/',import.meta.url),stdio:'inherit'}),spawn(process.execPath,['server.mjs'],{cwd:new URL('./',import.meta.url),stdio:'inherit'})];let stopping=false;function stop(){if(stopping)return;stopping=true;for(const c of children)c.kill('SIGTERM');}for(const c of children)c.on('exit',code=>{stop();process.exitCode=code??0;});for(const sig of ['SIGINT','SIGTERM'])process.on(sig,stop);
